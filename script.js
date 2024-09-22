@@ -79,14 +79,39 @@ class GameView {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         // 繪製鳥
-        this.ctx.fillStyle = 'yellow';
-        this.ctx.fillRect(model.bird.x, model.bird.y, 30, 30);
+        this.ctx.save();
+        this.ctx.translate(model.bird.x, model.bird.y);
+        this.ctx.rotate(model.bird.velocity * 0.1);
+        this.ctx.beginPath();
+        this.ctx.arc(0, 0, 20, 0, Math.PI * 2);
+        this.ctx.fillStyle = '#FFD700';
+        this.ctx.fill();
+        this.ctx.beginPath();
+        this.ctx.arc(7, -5, 12, 0, Math.PI * 2);
+        this.ctx.fillStyle = 'white';
+        this.ctx.fill();
+        this.ctx.beginPath();
+        this.ctx.arc(16, 0, 4, 0, Math.PI * 2);
+        this.ctx.fillStyle = '#FF6347';
+        this.ctx.fill();
+        this.ctx.restore();
 
         // 繪製管道
-        this.ctx.fillStyle = 'green';
+        this.ctx.fillStyle = '#228B22';
+        this.ctx.strokeStyle = '#006400';
+        this.ctx.lineWidth = 3;
         for (let pipe of model.pipes) {
+            // 上方管道
             this.ctx.fillRect(pipe.x, 0, 50, pipe.topHeight);
+            this.ctx.strokeRect(pipe.x, 0, 50, pipe.topHeight);
+            this.ctx.fillRect(pipe.x - 5, pipe.topHeight - 20, 60, 20);
+            this.ctx.strokeRect(pipe.x - 5, pipe.topHeight - 20, 60, 20);
+
+            // 下方管道
             this.ctx.fillRect(pipe.x, pipe.topHeight + 150, 50, 600 - pipe.topHeight - 150);
+            this.ctx.strokeRect(pipe.x, pipe.topHeight + 150, 50, 600 - pipe.topHeight - 150);
+            this.ctx.fillRect(pipe.x - 5, pipe.topHeight + 150, 60, 20);
+            this.ctx.strokeRect(pipe.x - 5, pipe.topHeight + 150, 60, 20);
         }
 
         // 更新分數
